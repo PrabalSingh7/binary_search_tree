@@ -40,21 +40,51 @@ Submissions : 653,332
  */
 class Solution {
 public:
+    
+    // APPROACH 1 : recurssive approach
+    //     T(O) = O(logn)
+    //     S(O) = O(height)
+//     TreeNode* searchBST(TreeNode* root, int val) {
+        
+//         //base case 
+//         if(root == NULL )
+//             return NULL;
+        
+//         TreeNode *ans = NULL;   //creating a temp TreeNode* to store and return ans
+        
+//         if(root->val > val) //traversing into left as value < root->val
+//             ans = searchBST(root->left, val);
+//         else if(root->val < val)    //traversing into left as value > root->val
+//             ans = searchBST(root->right, val);
+//         else    //case when value is found
+//             ans = root;
+        
+//         return ans;
+//     }
+    
+        
+//         APPROACH 2 : itterative approach
+//             T(O) = O(logn)
+//             S(O) = O(1)
+        
     TreeNode* searchBST(TreeNode* root, int val) {
         
         //base case 
         if(root == NULL )
             return NULL;
         
-        TreeNode *ans = NULL;   //creating a temp TreeNode* to store and return ans
+        TreeNode *temp = root;
         
-        if(root->val > val) //traversing into left as value < root->val
-            ans = searchBST(root->left, val);
-        else if(root->val < val)    //traversing into left as value > root->val
-            ans = searchBST(root->right, val);
-        else    //case when value is found
-            ans = root;
-        
-        return ans;
+        while(temp != NULL)     {
+            
+            if(temp->val > val) //traversing into left as value < root->val
+                temp = temp->left;
+            else if(temp->val < val)    //traversing into left as value > root->val
+                temp = temp->right;
+            else    //case when value is found
+                return temp;
+            
+        }        
+        return NULL;
     }
 };
