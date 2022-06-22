@@ -1,0 +1,87 @@
+
+    QUESTION :
+
+235. Lowest Common Ancestor of a Binary Search Tree
+Easy
+
+Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q 
+as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+ Example 1:
+Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+Output: 6
+Explanation: The LCA of nodes 2 and 8 is 6.
+ Example 2:
+Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+Output: 2
+Explanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
+ Example 3:
+Input: root = [2,1], p = 2, q = 1
+Output: 2
+ 
+ Constraints:
+The number of nodes in the tree is in the range [2, 105].
+-109 <= Node.val <= 109
+All Node.val are unique.
+p != q
+p and q will exist in the BST.
+
+Accepted:797,182
+Submissions:1,383,495
+
+
+
+
+
+    ANSWER :
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    
+// BASIC ALGO :-   there will be 3 conditions
+//     condition 1 : root>p && root>q   =    left mai jao;
+//     condition 2 : root<p && root<q   =    right mai jao;
+//     condition 3 : return the root , kyuki ye hi LCA hoga :)
+    
+// APPROACH 1 : reccursive approach for the algo.       T(O)=O(n)  &&  S(O)=O(n)
+
+//     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+//         if(root==NULL)return NULL;                          //base case
+        
+//         if(root->val > p->val && root->val > q->val)        //condition 1
+//             return lowestCommonAncestor(root->left,p,q);
+//         if(root->val < p->val && root->val < q->val)        //condition 2
+//             return lowestCommonAncestor(root->right,p,q);
+        
+//         else                                                //condition 3
+//             return root;
+//     }
+    
+// APPROACH 2 : iterative approach for the algo.    T(O)=O(n)  &&  S(O)=O(1)
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        while(root != NULL) {
+            if(root->val > p->val && root->val > q->val)        //condition 1
+                root = root->left;
+            else if(root->val < p->val && root->val < q->val)        //condition 2
+                root = root->right;
+            else                                                //condition 3
+                return root;
+        }
+        
+        return NULL;
+    }
+};
