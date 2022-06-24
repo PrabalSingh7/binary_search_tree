@@ -1,0 +1,70 @@
+
+    QUESTION =>
+
+530. Minimum Absolute Difference in BST
+Easy
+
+Given the root of a Binary Search Tree (BST), return the minimum absolute difference between the values of any two 
+different nodes in the tree.
+
+ Example 1:
+Input: root = [4,2,6,1,3]
+Output: 1
+ Example 2:
+Input: root = [1,0,48,null,null,12,49]
+Output: 1
+ 
+ Constraints:
+The number of nodes in the tree is in the range [2, 104].
+0 <= Node.val <= 105
+ 
+Note: This question is the same as 783: https://leetcode.com/problems/minimum-distance-between-bst-nodes/
+
+Accepted:162,931
+Submissions:289,222
+
+
+
+    ANSWER =>
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    vector<int> inorder;
+    int minD = INT_MAX;
+    
+public:
+
+    
+//APPROACH 1 : getting out the inorder vector of the BST (as it will alwsys be sorted) & then getting out the minimum difference from that answer.     T(O)=O(n)  &&  S(O)=O(n)     
+    
+    void inOrder(TreeNode* root,vector<int> &inorder)   {
+        if(root==NULL)      return ;
+        inOrder(root->left,inorder);
+        inorder.push_back(root->val);
+        inOrder(root->right,inorder);
+    }
+        
+    int getMinimumDifference(TreeNode* root) {
+        inOrder(root,inorder);
+        int diff = INT_MAX;
+        for(int i=0;i<inorder.size()-1;i++) {
+            if(inorder[i+1]-inorder[i] < diff)
+                diff = inorder[i+1]-inorder[i];
+        }
+        return diff;
+    }
+    
+//APPROACH 2 : we traverse the tree and for each node we'll get its differnce with predecessor and difference with its successesor && return the min of that
+
+};
