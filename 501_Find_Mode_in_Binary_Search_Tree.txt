@@ -46,47 +46,100 @@ Submissions:329,515
  * };
  */
 class Solution {
+// private:
+//     map <int,int> mp;   
+//     vector<int> answer;
+// public:
+    
+// //APPROACH 1 : (this approach uses extra space :) [but my own approach ;)] )
+// //    1. using map to store a pair of element -> mode.
+// //    2. then, storing map value pairs in heap.
+// //    3. pop out and store answer from heap till they are modes.
+    
+    
+//     void inorder(TreeNode *root, map<int,int> &mp)    {
+//         if(root==NULL)
+//             return;
+//         inorder(root->left,mp);
+//         mp[root->val]++;
+//         inorder(root->right,mp);
+//     }
+    
+//     vector<int> findMode(TreeNode* root) {
+//         inorder(root,mp);
+//         priority_queue<pair<int,int>> maxh;
+//         for (auto i = mp.begin();i != mp.end(); i++)
+//             maxh.push({i->second,i->first});
+//         int mode = maxh.top().second;
+//         answer.push_back(mode);
+//         int modeNumber = maxh.top().first;
+//         maxh.pop();
+//         while(maxh.size()>0) {
+//             if(maxh.top().first == modeNumber)    {
+//                 answer.push_back(maxh.top().second);
+//                 maxh.pop();
+//             }
+//             else    
+//                 maxh.pop();
+//         }
+//         return answer;
+//     }
+
+    
+    
+    
+// APPROACH 2 : (the optimized approach)
+//     1. we'll traverse in inorder fashion.
+//     2. for every node val we'll check its count if greater or less than max . 
+//         -> if its equal to max :- push that value in answer vector
+//         -> if its greater than max :- clear th answer vector(as new mode is found)
+//                                    :- push new mode value(current root->val) into answer vector
+//                                    :- update the value of max
+//         -> else do nothing.
+            
+    
+    
 private:
-    map <int,int> mp;   
-    vector<int> answer;
+    vector<int> modes;          //carrying the mode values.
+    int currentCount ;          //carry count of all curretn root->val.
+    int maxCount = INT_MIN;  //carry the count of mode till now.
+    int mVal = INT_MIN;         //carry the value of be current root to be counted evry step.
+
 public:
+           
+    void inOrder(TreeNode *root)    {
     
-//APPROACH 1 : (this approach uses extra space :) [but my own approach ;)] )
-//    1. using map to store a pair of element -> mode.
-//    2. then, storing map value pairs in heap.
-//    3. pop out and store answer from heap till they are modes.
-    
-    
-    void inorder(TreeNode *root, map<int,int> &mp)    {
-        if(root==NULL)
-            return;
-        inorder(root->left,mp);
-        mp[root->val]++;
-        inorder(root->right,mp);
-    }
-    
-    vector<int> findMode(TreeNode* root) {
-        inorder(root,mp);
-        priority_queue<pair<int,int>> maxh;
-        for (auto i = mp.begin();i != mp.end(); i++)
-            maxh.push({i->second,i->first});
-        int mode = maxh.top().second;
-        answer.push_back(mode);
-        int modeNumber = maxh.top().first;
-        maxh.pop();
-        while(maxh.size()>0) {
-            if(maxh.top().first == modeNumber)    {
-                answer.push_back(maxh.top().second);
-                maxh.pop();
+            if(root==NULL)      return;
+            
+            if(root->left)
+                inOrder(root->left);
+            
+            if(root->val == mVal)
+                currentCount++;
+            else
+                currentCount = 1;
+        
+            if(currentCount == maxCount)    //another mode is found
+                modes.push_back(root->val);
+            if(currentCount > maxCount) {
+                modes.clear();              //new mode is found(higer count then prev ones)
+                modes.push_back(root->val);      //pushing in new mode.
+                maxCount = currentCount;    //updating the new maxCount value
             }
-            else    
-                maxh.pop();
-        }
-        return answer;
+            mVal = root->val;               //new mode value updated
+            
+            if(root->right)
+                inOrder(root->right);
+    
     }
     
-    
-    
-    
+    vector<int> findMode(TreeNode* root)    {
+        inOrder(root);
+        return modes;
+    }
     
 };
+
+
+
+
