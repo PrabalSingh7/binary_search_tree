@@ -75,10 +75,5 @@ public:
         int sum = 0;
         return func(root,sum);
     }
-    
-// APPROACH 2 :(my own approach)   
-//      ->we traverse the tree in Inorder fashion, and storing the nodes in a vector<TreeNode*> .
-//      ->thus at the traversal will be complete, we will traverse in the vector from end, and keep a int sum updating sum values as we traverse and keep on changing the values .
-//  T(O) = O(N)
-//  S(O) = O(N)
+
 };
