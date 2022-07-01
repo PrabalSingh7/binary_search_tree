@@ -93,4 +93,33 @@ public:
         return ans;
         
     }
+
+
+
+// APPROACH 2: [  T(O)=O(nlogn)    S(O)=O(logn)  ]
+//     ->applying the binary search Balanced BST building concept directly to the list.
+    
+    
+    
+    TreeNode* function(ListNode* head, ListNode* tail = NULL) {
+        if (head == tail) 
+            return NULL;
+        
+        ListNode* fast = head, *slow = head;        //used to reach the middle element of list 
+        while (fast != tail && fast->next != tail) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        TreeNode* root = new TreeNode(slow->val);   //creating nodes
+        root->left = function(head, slow);          //going left : head to slow(mid)
+        root->right = function(slow->next, tail);   //goinf right : slow->next(mid+1) to tail
+        
+        return root;
+    }
+    
+    TreeNode* sortedListToBST(ListNode* head)   {
+        ListNode* tail = NULL;
+        return function(head,tail);
+    }
 };
